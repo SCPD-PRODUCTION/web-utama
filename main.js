@@ -1,10 +1,10 @@
-// ========== DATA PRODUK DARI LOCAL STORAGE ==========
+// Ambil produk dari localStorage (sinkron web admin)
 let produkData = JSON.parse(localStorage.getItem("produkData")) || [];
 
 const produkContainer = document.getElementById("produkContainer");
 const searchInput = document.getElementById("searchInput");
 
-// ========== BUAT BARIS PRODUK (MAKS 20 PER BARIS) ==========
+// Bagi produk jadi baris (max 20 per baris)
 function createRows(data) {
   const rows = [];
   for (let i = 0; i < data.length; i += 20) {
@@ -13,7 +13,7 @@ function createRows(data) {
   return rows;
 }
 
-// ========== RENDER PRODUK ==========
+// Render produk
 function renderProduk(filtered = produkData) {
   produkContainer.innerHTML = "";
   const rows = createRows(filtered);
@@ -40,4 +40,47 @@ function renderProduk(filtered = produkData) {
 
     // Panah kiri
     const prevBtn = document.createElement("button");
-    prevBtn.classList.add("slider-bt
+    prevBtn.classList.add("slider-btn", "prev-btn");
+    prevBtn.innerHTML = "&#8592;";
+    prevBtn.addEventListener("click", () => {
+      rowDiv.scrollBy({ left: -220, behavior: "smooth" });
+    });
+
+    // Panah kanan
+    const nextBtn = document.createElement("button");
+    nextBtn.classList.add("slider-btn", "next-btn");
+    nextBtn.innerHTML = "&#8594;";
+    nextBtn.addEventListener("click", () => {
+      rowDiv.scrollBy({ left: 220, behavior: "smooth" });
+    });
+
+    wrapper.appendChild(prevBtn);
+    wrapper.appendChild(rowDiv);
+    wrapper.appendChild(nextBtn);
+    produkContainer.appendChild(wrapper);
+  });
+}
+
+// Search fitur
+searchInput.addEventListener("input", (e) => {
+  const keyword = e.target.value.toLowerCase();
+  const filtered = produkData.filter((p) =>
+    p.judul.toLowerCase().includes(keyword)
+  );
+  renderProduk(filtered);
+});
+
+// Tombol beli → WhatsApp
+window.beliProduk = function (namaProduk) {
+  const nomorWA = "6288976424767"; // Ganti nomor kamu
+  const text = encodeURIComponent(`Halo, saya tertarik membeli produk: ${namaProduk}`);
+  window.open(`https://wa.me/${nomorWA}?text=${text}`, "_blank");
+};
+
+// Klik logo → ke atas
+document.getElementById("logo").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Load awal
+renderProduk();
