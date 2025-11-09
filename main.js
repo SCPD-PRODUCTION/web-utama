@@ -1,10 +1,24 @@
-// Ambil produk dari localStorage (sinkron web admin)
-let produkData = JSON.parse(localStorage.getItem("produkData")) || [];
+// ===== Ambil produk dari GitHub (utama) atau localStorage (cadangan) =====
+const GITHUB_JSON_URL = "https://raw.githubusercontent.com/SCPD-PRODUCTION/web-utama/main/produk.json";
 
+async function loadProduk() {
+  try {
+    const res = await fetch(GITHUB_JSON_URL + "?t=" + new Date().getTime()); // cegah cache
+    if (!res.ok) throw new Error("Gagal fetch produk.json");
+    const data = await res.json();
+    console.log("✅ Data produk diambil dari GitHub");
+    return data;
+  } catch (err) {
+    console.warn("⚠️ Gagal ambil dari GitHub, pakai localStorage:", err.message);
+    return JSON.parse(localStorage.getItem("produkData")) || [];
+  }
+}
+
+let produkData = [];
 const produkContainer = document.getElementById("produkContainer");
 const searchInput = document.getElementById("searchInput");
 
-// Bagi produk jadi baris (max 20 per baris)
+// ===== Fungsi bantu: bagi produk jadi baris =====
 function createRows(data) {
   const rows = [];
   for (let i = 0; i < data.length; i += 20) {
@@ -13,7 +27,7 @@ function createRows(data) {
   return rows;
 }
 
-// Render produk
+// ===== Render produk =====
 function renderProduk(filtered = produkData) {
   produkContainer.innerHTML = "";
   const rows = createRows(filtered);
@@ -61,7 +75,7 @@ function renderProduk(filtered = produkData) {
   });
 }
 
-// Search fitur
+// ===== Fitur pencarian =====
 searchInput.addEventListener("input", (e) => {
   const keyword = e.target.value.toLowerCase();
   const filtered = produkData.filter((p) =>
@@ -70,17 +84,30 @@ searchInput.addEventListener("input", (e) => {
   renderProduk(filtered);
 });
 
-// Tombol beli → WhatsApp
+// ===== Tombol beli (langsung ke WhatsApp) =====
 window.beliProduk = function (namaProduk) {
-  const nomorWA = "6288976424767"; // Ganti nomor kamu
+  const nomorWA = "6288976424767"; // Ganti dengan nomor kamu
   const text = encodeURIComponent(`Halo, saya tertarik membeli produk: ${namaProduk}`);
   window.open(`https://wa.me/${nomorWA}?text=${text}`, "_blank");
 };
 
-// Klik logo → ke atas
+// ===== Klik logo → scroll ke atas =====
 document.getElementById("logo").addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
-// Load awal
-renderProduk();
+// ===== Muat data dari GitHub pertama kali =====
+loadProduk().then((data) => {
+  produkData = data;
+  renderProduk();
+});
+
+// ===== Auto-refresh produk setiap 5 menit (opsional) =====
+setInterval(async () => {
+  const newData = await loadProduk();
+  if (JSON.stringify(newData) !== JSON.stringify(produkData)) {
+    produkData = newData;
+    renderProduk();
+    console.log("🔄 Produk diperbarui otomatis dari GitHub");
+  }
+}, 300000); // 300000 ms = 5 menit
