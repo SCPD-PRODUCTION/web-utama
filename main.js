@@ -1,30 +1,31 @@
-// Ambil produk dari localStorage (web admin)
+// Ambil produk dari localStorage (sinkron web admin)
 let produkData = JSON.parse(localStorage.getItem("produkData")) || [];
 
 const produkContainer = document.getElementById("produkContainer");
+const searchInput = document.getElementById("searchInput");
 
-// Bagi produk menjadi baris (max 20 produk per baris)
+// Bagi produk jadi baris (max 20 per baris)
 function createRows(data) {
   const rows = [];
-  for(let i=0; i<data.length; i+=20){
-    rows.push(data.slice(i, i+20));
+  for (let i = 0; i < data.length; i += 20) {
+    rows.push(data.slice(i, i + 20));
   }
   return rows;
 }
 
-// Render produk dengan slider panah
-function renderProduk() {
+// Render produk
+function renderProduk(filtered = produkData) {
   produkContainer.innerHTML = "";
-  const rows = createRows(produkData);
+  const rows = createRows(filtered);
 
-  rows.forEach((rowData,rowIndex) => {
+  rows.forEach((rowData) => {
     const wrapper = document.createElement("div");
     wrapper.classList.add("produk-row-wrapper");
 
     const rowDiv = document.createElement("div");
     rowDiv.classList.add("produk-row");
 
-    rowData.forEach((p,i) => {
+    rowData.forEach((p) => {
       const item = document.createElement("div");
       item.classList.add("produk-item");
       item.innerHTML = `
@@ -37,41 +38,49 @@ function renderProduk() {
       rowDiv.appendChild(item);
     });
 
-    // Tombol panah kiri
+    // Panah kiri
     const prevBtn = document.createElement("button");
-    prevBtn.classList.add("slider-btn","prev-btn");
+    prevBtn.classList.add("slider-btn", "prev-btn");
     prevBtn.innerHTML = "&#8592;";
     prevBtn.addEventListener("click", () => {
-      rowDiv.scrollBy({ left: -220, behavior: 'smooth' });
+      rowDiv.scrollBy({ left: -220, behavior: "smooth" });
     });
 
-    // Tombol panah kanan
+    // Panah kanan
     const nextBtn = document.createElement("button");
-    nextBtn.classList.add("slider-btn","next-btn");
+    nextBtn.classList.add("slider-btn", "next-btn");
     nextBtn.innerHTML = "&#8594;";
     nextBtn.addEventListener("click", () => {
-      rowDiv.scrollBy({ left: 220, behavior: 'smooth' });
+      rowDiv.scrollBy({ left: 220, behavior: "smooth" });
     });
 
     wrapper.appendChild(prevBtn);
     wrapper.appendChild(rowDiv);
     wrapper.appendChild(nextBtn);
-
     produkContainer.appendChild(wrapper);
   });
 }
 
-// Tombol beli → arahkan ke WhatsApp
-window.beliProduk = function(namaProduk){
-  const nomorWA = "628123456789"; // ganti nomor WA kamu
-  const text = encodeURIComponent(`Halo, saya ingin membeli produk: ${namaProduk}`);
-  window.open(`https://wa.me/${nomorWA}?text=${text}`,"_blank");
-}
-
-// Klik logo kembali ke branda (scroll ke atas)
-document.getElementById("logo").addEventListener("click", () => {
-  window.scrollTo({top:0, behavior:'smooth'});
+// Search fitur
+searchInput.addEventListener("input", (e) => {
+  const keyword = e.target.value.toLowerCase();
+  const filtered = produkData.filter((p) =>
+    p.judul.toLowerCase().includes(keyword)
+  );
+  renderProduk(filtered);
 });
 
-// Render saat load
+// Tombol beli → WhatsApp
+window.beliProduk = function (namaProduk) {
+  const nomorWA = "628123456789"; // Ganti nomor kamu
+  const text = encodeURIComponent(`Halo, saya tertarik membeli produk: ${namaProduk}`);
+  window.open(`https://wa.me/${nomorWA}?text=${text}`, "_blank");
+};
+
+// Klik logo → ke atas
+document.getElementById("logo").addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Load awal
 renderProduk();
