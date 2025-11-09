@@ -72,7 +72,7 @@ searchInput.addEventListener("input", (e) => {
 
 // Tombol beli → WhatsApp
 window.beliProduk = function (namaProduk) {
-  const nomorWA = "628123456789"; // Ganti nomor kamu
+  const nomorWA = "6288976424767"; // Ganti nomor kamu
   const text = encodeURIComponent(`Halo, saya tertarik membeli produk: ${namaProduk}`);
   window.open(`https://wa.me/${nomorWA}?text=${text}`, "_blank");
 };
