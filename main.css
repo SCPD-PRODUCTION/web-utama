@@ -1,0 +1,194 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #111;
+  color: #ffae42;
+}
+
+/* Header */
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111;
+  border-bottom: 2px solid #ffae42;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.menu-icon {
+  position: absolute;
+  left: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #ffae42;
+}
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo {
+  cursor: pointer;
+  color: #ffae42;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ffae42, 0 0 10px #ffae42;
+}
+
+/* Tentang Kami */
+.about-us {
+  background-color: #1a1a1a;
+  border: 1px solid #ffae42;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 50px auto 30px auto;
+  max-width: 800px;
+  text-align: center;
+}
+
+.about-us h2 {
+  color: #ffae42;
+  text-shadow: 0 0 5px #ffae42, 0 0 10px #ffae42;
+  margin-bottom: 10px;
+}
+
+.about-us p {
+  color: #ffcc66;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Produk main container */
+.product-main {
+  padding: 0 20px 20px 20px;
+}
+
+/* Baris produk horizontal */
+.produk-row-wrapper {
+  position: relative;
+}
+
+.produk-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  margin-bottom: 40px;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+
+/* Tombol panah slider */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,174,66,0.8);
+  border: none;
+  color: #111;
+  font-size: 24px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev-btn {
+  left: 0;
+}
+
+.next-btn {
+  right: 0;
+}
+
+/* Kotak produk */
+.produk-item {
+  flex: 0 0 200px;
+  background-color: #222;
+  border: 1px solid #ffae42;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.produk-item img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.produk-item h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.produk-item p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.produk-item .harga {
+  font-weight: bold;
+  margin-top: auto;
+}
+
+.produk-item button {
+  background: linear-gradient(45deg, #ff9900, #ffae42);
+  border: none;
+  color: #111;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.produk-item button:hover {
+  filter: brightness(1.2);
+}
+
+/* Footer */
+.main-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #111;
+  border-top: 2px solid #ffae42;
+  padding: 15px 20px;
+  position: relative;
+}
+
+.main-footer .copyright {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffae42;
+  font-size: 14px;
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.social-icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  filter: brightness(1) drop-shadow(0 0 2px #ffae42);
+  transition: transform 0.2s;
+}
+
+.social-icon:hover {
+  transform: scale(1.2);
+}
