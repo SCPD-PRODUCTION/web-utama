@@ -39,6 +39,28 @@ body {
   text-shadow: 0 0 5px #ffae42, 0 0 10px #ffae42;
 }
 
+/* Search Bar */
+.search-bar {
+  position: absolute;
+  right: 20px;
+}
+
+.search-bar input {
+  background: #222;
+  border: 1px solid #ffae42;
+  border-radius: 5px;
+  padding: 6px 10px;
+  color: #ffae42;
+  outline: none;
+  width: 160px;
+  transition: width 0.3s;
+}
+
+.search-bar input:focus {
+  width: 220px;
+  box-shadow: 0 0 8px #ffae42;
+}
+
 /* Tentang Kami */
 .about-us {
   background-color: #1a1a1a;
